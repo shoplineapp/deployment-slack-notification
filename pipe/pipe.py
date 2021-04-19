@@ -14,10 +14,17 @@ class SlackNotificationPipe(Pipe):
 
         uuid = self.env.get('BITBUCKET_STEP_TRIGGERER_UUID')
         user_name = requests.get(f"https://api.bitbucket.org/2.0/users/{uuid}").json()['display_name']
-        title = f"Deployed - {self.env.get('BITBUCKET_REPO_FULL_NAME')} - {self.env.get('BITBUCKET_DEPLOYMENT_ENVIRONMENT')} - {user_name}"
+        title = f"{self.env.get('BITBUCKET_REPO_FULL_NAME')} - {self.env.get('BITBUCKET_DEPLOYMENT_ENVIRONMENT')} - {user_name}"
+
+        if self.env.get('BITBUCKET_EXIT_CODE'):
+            status_color = "#ff6961"
+            title = f"Failed - {title}"
+        else:
+            status_color = "#00bb00"
+            title = f"Deployed - {title}"
 
         payload = {
-            "fallback": title,
+            "text": title,
             "blocks": [
                 {
                     "type": "header",
@@ -32,7 +39,7 @@ class SlackNotificationPipe(Pipe):
             ],
             "attachments": [
                 {
-                    "color": "#00bb00",
+                    "color": status_color,
                     "blocks": [
                         {
                             "type": "section",
