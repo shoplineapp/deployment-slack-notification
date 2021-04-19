@@ -1,7 +1,8 @@
-FROM alpine:3.13.5
+FROM python:3.7-slim
 
-RUN apk update && apk add curl bash jq && rm -rf /var/cache/apk/*
+COPY requirements.txt /
+RUN pip install -r /requirements.txt
 
-COPY pipe.sh /
+COPY pipe /
 
-ENTRYPOINT ["/pipe.sh"]
+ENTRYPOINT ["python3", "/pipe.py"]
