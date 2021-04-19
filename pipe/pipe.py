@@ -16,7 +16,7 @@ class SlackNotificationPipe(Pipe):
         user_name = requests.get(f"https://api.bitbucket.org/2.0/users/{uuid}").json()['display_name']
         title = f"{self.env.get('BITBUCKET_REPO_FULL_NAME')} - {self.env.get('BITBUCKET_DEPLOYMENT_ENVIRONMENT')} - {user_name}"
 
-        if self.env.get('BITBUCKET_EXIT_CODE'):
+        if int(self.env.get('BITBUCKET_EXIT_CODE')):
             status_color = "#ff6961"
             title = f"Failed - {title}"
         else:
