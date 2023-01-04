@@ -50,7 +50,7 @@ class SlackNotificationPipe(Pipe):
                                 },
                                 {
                                     "type": "mrkdwn",
-                                    "text": f"*Branch:*\n{self.env.get('BITBUCKET_BRANCH')}"},
+                                    "text": f"*Branch:*\n{self.env.get('BITBUCKET_TAG') if self.env.get('BITBUCKET_TAG') else self.env.get('BITBUCKET_BRANCH')}"},
                                 {
                                     "type": "mrkdwn",
                                     "text": f"*Deployed by:*\n{user_name}"},
